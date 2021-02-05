@@ -1,0 +1,14 @@
+cradle:
+  stack:
+    - path: "./src"
+      component: "haskell-brainfk:lib"
+
+    - path: "./app/Main.hs"
+      component: "haskell-brainfk:exe:haskell-brainfk-exe"
+
+    - path: "./app/Paths_haskell_brainfk.hs"
+      component: "haskell-brainfk:exe:haskell-brainfk-exe"
+
+    - path: "./test"
+      component: "haskell-brainfk:test:haskell-brainfk-test"
+      stackYaml: "./stack-hls.yaml"
