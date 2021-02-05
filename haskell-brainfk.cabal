@@ -4,16 +4,16 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 63e6e77583778bed34776dac9b095dacfefac075ec1fcf0c016d12a93cb77be3
+-- hash: ef38246e03bee85c9016b80762f38484787826759ddacb97d104c09f9b3a10c6
 
 name:           haskell-brainfk
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/haskell-brainfk#readme>
-homepage:       https://github.com/githubuser/haskell-brainfk#readme
-bug-reports:    https://github.com/githubuser/haskell-brainfk/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2021 Author name here
+description:    Please see the README on GitHub at <https://github.com/yuki2501/haskell-brainfk#readme>
+homepage:       https://github.com/yuki2501/haskell-brainfk#readme
+bug-reports:    https://github.com/yuki2501/haskell-brainfk/issues
+author:         yuki2501
+maintainer:     yuki2501@protonmail.com
+copyright:      2021 yuki2501
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
@@ -23,7 +23,7 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/haskell-brainfk
+  location: https://github.com/yuki2501/haskell-brainfk
 
 library
   exposed-modules:
