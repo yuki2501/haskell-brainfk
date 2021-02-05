@@ -18,7 +18,7 @@ increment m = m{pointer = pointer m + 1}
 decrement :: Memory -> Memory
 decrement m = m{pointer = pointer m - 1}
 
-runM ::  Skeleton BrainFk ()-> Memory -> IO ((),Memory)
+runM ::  Skeleton BrainFk ()-> Memory -> IO Memory
 runM m memory = case debone m of
                      BRight r :>>= k -> runM  (bone r >> k ()) (bright memory)  
                      BLeft r :>>= k -> runM  (bone r >> k()) (bleft memory)
@@ -36,9 +36,8 @@ runM m memory = case debone m of
                          if pointer n == (0::Word8) then runM  (bone r' >> k ()) n
                                              else do
                                                result <- runM (bone (parseBrainFk r)) n
-                                               let state = snd result
-                                               loop state 
+                                               loop result
                      BNil :>>= k -> runM (k ()) memory
-                     Return a -> pure ((),memory)
+                     Return a -> pure memory
 
 
