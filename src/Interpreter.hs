@@ -25,7 +25,8 @@ runM m memory = case debone m of
                      Increment r :>>= k -> runM   (bone r >> k()) (increment memory)
                      Decrement r :>>= k -> runM  (bone r >> k()) (decrement memory)
                      BPrint r :>>= k -> do
-                       putChar $ toEnum $ fromEnum $ pointer memory 
+                       putChar . toEnum . fromEnum $ pointer memory
+                       putChar '\n'
                        runM (bone r >> k()) memory
                      BGet r :>>= k -> do
                        x <- fmap (toEnum . fromEnum) getChar
