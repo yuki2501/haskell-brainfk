@@ -15,7 +15,7 @@ initMemory = Memory (repeat (0::Word8)) 0 (repeat (0::Word8))
 
 loop :: IO ()
 loop = do
-  putStr ('\n':"haskell-BrainFk>")
+  putStr "haskell-BrainFk>"
   hFlush stdout
   bf <- getLine
   let parsedbf = parseBrainFk $ pack bf
