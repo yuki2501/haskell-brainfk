@@ -25,11 +25,11 @@ runM m memory = case debone m of
                      Increment r :>>= k -> runM   (bone r >> k()) (increment memory)
                      Decrement r :>>= k -> runM  (bone r >> k()) (decrement memory)
                      BPrint r :>>= k -> do
-                       putChar . toEnum . fromEnum $ pointer memory
+                       putChar  (toEnum . fromEnum $ pointer memory)
                        runM (bone r >> k()) memory
                      BGet r :>>= k -> do
                        x <- fmap (toEnum . fromEnum) getChar
-                       runM   (bone r >> k ()) (memory{pointer = x})
+                       runM  (bone r >> k ()) (memory{pointer = x})
                      BLoop r r' :>>= k -> do
                        let pointer' = pointer memory
                        flip fix memory \loop n  ->
@@ -37,7 +37,11 @@ runM m memory = case debone m of
                                              else do
                                                result <- runM (bone (parseBrainFk r)) n
                                                loop result
-                     BNil :>>= k -> runM (k ()) memory
+                     BNil  :>>= k -> runM   (k()) memory
+                     BInvalidChar r :>>= k -> runM (bone r >> k()) memory
+                     BError :>>= k -> do
+                       putStrLn "error"
+                       runM (k ()) memory
                      Return a -> pure memory
 
 

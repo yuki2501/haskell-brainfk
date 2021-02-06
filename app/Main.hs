@@ -17,7 +17,7 @@ loop :: IO ()
 loop = do
   putStr ('\n':"haskell-BrainFk>")
   hFlush stdout
-  bf <- getLine
+  bf <- getLine 
   let parsedbf = parseBrainFk $ pack bf
   runM (bone parsedbf) initMemory
   loop

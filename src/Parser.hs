@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE GADTs #-}
-module Parser(BrainFk(BRight,BLeft,Increment,Decrement,BPrint,BGet,BLoop,BNil),parseBrainFk) where
+module Parser(BrainFk(BRight,BLeft,Increment,Decrement,BPrint,BGet,BLoop,BNil,BError,BInvalidChar),parseBrainFk) where
 import Control.Applicative
 import Data.Attoparsec.Text
 import Data.Text
@@ -14,9 +14,9 @@ data BrainFk a  where
   BPrint :: BrainFk() ->BrainFk ()
   BGet ::   BrainFk() -> BrainFk ()
   BLoop ::  Text -> BrainFk() -> BrainFk ()
-  BNil :: BrainFk ()
+  BInvalidChar :: BrainFk () -> BrainFk()
+  BNil ::  BrainFk ()
   BError :: BrainFk()
-  A :: BrainFk()
 instance Show (BrainFk r) where
   show (BRight r) = "BRight " ++ show r
   show (BLeft r) = "BLeft " ++ show r
@@ -25,19 +25,21 @@ instance Show (BrainFk r) where
   show (BPrint r) = "BPrint " ++ show r
   show (BGet r) = "BGet " ++ show r
   show (BLoop r r') = "BLoop " ++ show r ++ show r'
-  show BNil = "BNil"
+  show BNil= "BNil" 
+  show (BInvalidChar r) = "BInvaildChar " ++ show r 
   show BError = "BError"
 parseBrainFk ::   Text -> BrainFk ()
 parseBrainFk s = let result = showParseResult $ parse (brainfkParser <* endOfInput) s `feed` pack ""
                   in case result of
                        Right x -> x
-                       Left _ -> BNil
+                       Left _ -> BError
+
 
 brainfkParser :: Parser (BrainFk ())
-brainfkParser = bright <|> bleft <|> increment <|> decrement <|> bprint <|> bget <|> bloop <|> pure BNil
+brainfkParser = bright <|> bleft <|> increment <|> decrement <|> bprint <|> bget <|> bloop <|> binvaildchar <|> pure BNil
   where
     brainfk :: Parser (BrainFk ())
-    brainfk = bright <|> bleft <|> increment <|> decrement <|> bprint <|> bget<|> bloop <|> pure BNil
+    brainfk = bright <|> bleft <|> increment <|> decrement <|> bprint <|> bget<|> bloop <|> binvaildchar <|>   pure BNil
     bright :: Parser (BrainFk ())
     bright = BRight <$ char '>' <*> brainfk
     bleft :: Parser (BrainFk ())
@@ -52,6 +54,8 @@ brainfkParser = bright <|> bleft <|> increment <|> decrement <|> bprint <|> bget
     bget = BGet <$ char ',' <*> brainfk
     bloop :: Parser (BrainFk ())
     bloop = BLoop <$ char '[' <*> (pack <$> many1 (char '<' <|> char '>' <|> char '+' <|> char '-' <|> char '.' <|> char ',')) <* char ']' <*> brainfk
+    binvaildchar :: Parser (BrainFk ())
+    binvaildchar = BInvalidChar <$ anyChar <*> brainfk
 --(pack <$> many1 (char '<' <|> char '>' <|> char '+' <|> char '-' <|> char '.' <|> char ','))
 showParseResult :: Show a => Result a -> Either Text a
 showParseResult (Done _ r) = Right r
