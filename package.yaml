@@ -24,6 +24,7 @@ dependencies:
 - attoparsec
 - text
 - monad-skeleton
+- transformers
 library:
   source-dirs: src
 
