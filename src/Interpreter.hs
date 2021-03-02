@@ -1,4 +1,3 @@
-{-# LANGUAGE BlockArguments #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE LambdaCase #-}
 module Interpreter(Memory(Memory),runM',bright,bleft,increment,decrement,bprint,bget,binvalidChar,berror) where
