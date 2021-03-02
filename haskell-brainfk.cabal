@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.3.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ef38246e03bee85c9016b80762f38484787826759ddacb97d104c09f9b3a10c6
+-- hash: 6d695acd55dfe74aad45e8335ce89a68dea7e3aa3c5b14fd3077fbc142613d0e
 
 name:           haskell-brainfk
 version:        0.1.0.0
@@ -38,6 +38,7 @@ library
     , base >=4.7 && <5
     , monad-skeleton
     , text
+    , transformers
   default-language: Haskell2010
 
 executable haskell-brainfk-exe
@@ -53,6 +54,7 @@ executable haskell-brainfk-exe
     , haskell-brainfk
     , monad-skeleton
     , text
+    , transformers
   default-language: Haskell2010
 
 test-suite haskell-brainfk-test
@@ -69,4 +71,5 @@ test-suite haskell-brainfk-test
     , haskell-brainfk
     , monad-skeleton
     , text
+    , transformers
   default-language: Haskell2010
