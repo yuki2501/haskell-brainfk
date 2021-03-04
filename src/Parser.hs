@@ -6,6 +6,7 @@ import Data.Attoparsec.Text
 import Data.Text
 import Data.Word
 
+
 data BrainFk a  where
   BRight ::   BrainFk () 
   BLeft  ::   BrainFk ()
@@ -17,17 +18,20 @@ data BrainFk a  where
   BInvalidChar ::  BrainFk ()
   BNil ::  BrainFk ()
   BError :: BrainFk ()
+
 instance Show (BrainFk a) where
-  show (BRight ) = "BRight " 
-  show (BLeft ) = "BLeft " 
-  show (Increment ) = "Increment " 
-  show (Decrement ) = "Decrement" 
-  show (BPrint ) = "BPrint " 
-  show (BGet ) = "BGet " 
-  show (BLoop r ) = "BLoop " 
+  show BRight  = "BRight " 
+  show BLeft  = "BLeft " 
+  show Increment  = "Increment " 
+  show Decrement  = "Decrement" 
+  show BPrint  = "BPrint " 
+  show BGet  = "BGet " 
+  show (BLoop r)  = "BLoop " 
   show BNil = "BNil" 
-  show (BInvalidChar ) = "BInvaildChar " 
+  show BInvalidChar  = "BInvaildChar " 
   show BError = "BError"
+
+-- パースを実行する▼関数
 parseBrainFk ::   Text -> [BrainFk ()]
 parseBrainFk s = let result = showParseResult $ parse (brainfkParser <* endOfInput) s `feed` pack ""
                   in case result of
@@ -56,7 +60,7 @@ brainfkParser =  many1 brainfk
     bloop = BLoop <$ char '[' <*> (pack <$> many1 (char '<' <|> char '>' <|> char '+' <|> char '-' <|> char '.' <|> char ',')) <* char ']' 
     binvaildchar :: Parser (BrainFk ())
     binvaildchar = BInvalidChar <$ anyChar 
---(pack <$> many1 (char '<' <|> char '>' <|> char '+' <|> char '-' <|> char '.' <|> char ','))
+
 showParseResult :: Show a => Result a -> Either Text a
 showParseResult (Done _ r) = Right r
 showParseResult r = Left . pack $ show r

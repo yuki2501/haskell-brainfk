@@ -12,17 +12,21 @@ import Control.Monad.IO.Class
 
 type M = Skeleton BrainFk
 data Memory = Memory {left :: [Word8],pointer :: Word8, right :: [Word8]}
-
+-- >
 right' :: Memory -> Memory
 right' (Memory l p []) = Memory (p:l) 0 []
 right' (Memory l p (r:rs)) = Memory (p:l) r rs
+-- <
 left' :: Memory -> Memory
 left'  (Memory [] p r) = Memory [] 0 (p:r)
 left' (Memory (l:ls) p r) = Memory ls l (p:r)
+-- +
 increment' :: Memory -> Memory
 increment' m = m{pointer = pointer m + 1}
+-- -
 decrement' :: Memory -> Memory
 decrement' m = m{pointer = pointer m - 1}
+
 
 runM' :: Skeleton BrainFk () -> StateT Memory IO ()
 runM' = deboneBy $ \case
@@ -44,12 +48,12 @@ runM' = deboneBy $ \case
   BError :>>= k -> lift (putStrLn "error") >>= (runM' . k)
   Return a -> pure ()
 -- Monads 
-bright = bone  BRight
-bleft = bone BLeft
-increment = bone Increment
-decrement = bone Decrement
-bprint = bone BPrint
-bget = bone BGet
-bloop = bone  BLoop
-binvalidChar = bone BInvalidChar
-berror = bone BError
+bright = bone  BRight -- Monad expresses > 
+bleft = bone BLeft -- Monad expresses  <
+increment = bone Increment -- Monad expresses + 
+decrement = bone Decrement -- Monad expresses -
+bprint = bone BPrint -- Monad expresses '.'
+bget = bone BGet -- Monad expresses ','
+bloop = bone  BLoop -- Monad express '[]'
+binvalidChar = bone BInvalidChar -- Monad express invalid Char
+berror = bone BError -- Monad expresses Error
