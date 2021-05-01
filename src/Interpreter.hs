@@ -38,11 +38,10 @@ runM' = deboneBy $ \case
   BGet :>>= k -> lift getChar >>= (\char -> modify $ \(Memory l p r) -> Memory l (toEnum . fromEnum $ char) r) >>= (runM' . k)
   BLoop r :>>= k -> loop >>= (runM' . k)
     where
-      program = parseBrainFk r
       loop = do
         pointer <- pointer<$>get
         if pointer == 0 then return ()
-                        else mapM_ (runM' . bone)  program >> loop
+                        else mapM_ (runM' . bone)  r >> loop
   BNil :>>= k -> modify id >>= (runM' . k)
   BInvalidChar :>>= k -> modify id >>= (runM' . k)
   BError :>>= k -> lift (putStrLn "error") >>= (runM' . k)

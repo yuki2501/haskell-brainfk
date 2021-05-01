@@ -14,7 +14,7 @@ data BrainFk a  where
   Decrement ::   BrainFk ()
   BPrint :: BrainFk ()
   BGet ::    BrainFk ()
-  BLoop ::  Text -> BrainFk () 
+  BLoop ::  [BrainFk ()] -> BrainFk () 
   BInvalidChar ::  BrainFk ()
   BNil ::  BrainFk ()
   BError :: BrainFk ()
@@ -57,7 +57,7 @@ brainfkParser =  many1 brainfk
     bget :: Parser (BrainFk ())
     bget = BGet <$ char ',' 
     bloop :: Parser (BrainFk ())
-    bloop = BLoop <$ char '[' <*> (pack <$> many1 (char '<' <|> char '>' <|> char '+' <|> char '-' <|> char '.' <|> char ',')) <* char ']' 
+    bloop = BLoop . parseBrainFk  <$> (char '[' *> (pack <$> many1 (char '<' <|> char '>' <|> char '+' <|> char '-' <|> char '.' <|> char ',')) <* char ']')
     binvaildchar :: Parser (BrainFk ())
     binvaildchar = BInvalidChar <$ anyChar 
 

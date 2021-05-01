@@ -7,7 +7,6 @@ import Control.Monad.Skeleton
 import System.IO
 import Control.Monad.Trans.State.Strict
 import Debug.Trace
-
 main :: IO ()
 main = do
   loop
